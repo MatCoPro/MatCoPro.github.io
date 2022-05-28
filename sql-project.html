@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"
+      rel="stylesheet"
+    />
+
+    <title>Matt Cooper - Analyst Portfolio</title>
+<!--
+Reflux Template
+https://templatemo.com/tm-531-reflux
+-->
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+  </head>
+
+  <body>
+      <div id="page-wraper">
+          <!-- Floating Return Button-->
+          <div class="red-button-float">
+              <a href="index.html#projects">Back to Projects</a>
+          </div>
+          <!-- Sidebar Menu -->
+          <div class="responsive-nav">
+              <i class="fa fa-bars" id="menu-toggle"></i>
+              <div id="menu" class="menu">
+                  <i class="fa fa-times" id="menu-close"></i>
+                  <div class="container">
+                      <div class="image">
+                          <a href="#"><img src="assets/images/author-image.jpg" alt="" /></a>
+                      </div>
+                      <div class="author-content">
+                          <h4>Matt Cooper</h4>
+                          <span>Data Analyst</span>
+                      </div>
+                      <nav class="main-nav" role="navigation">
+                          <ul class="main-menu">
+                              <li><a href="#section1">Intro</a></li>
+                              <li><a href="#section2">Process &amp; Visualizations</a></li>
+                              <!--<li><a href="#section3">Discussion</a></li>-->
+                              <li><a href="#section4">Go Back</a></li>
+                          </ul>
+                      </nav>
+                      <div class="social-network">
+                          <ul class="soial-icons">
+                              <li>
+                                  <a href="https://www.linkedin.com/in/mattcoopro/"><i class="fa fa-linkedin"></i></a>
+                              </li>
+                          </ul>
+                      </div>
+                      <div class="copyright-text">
+                          <p>Copyright 2019 Reflux Design</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <section class="section about-me" data-section="section1">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>Introduction</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          <br />
+                          For this project, I am using the DVD Rental database that is often used for learning SQL.
+                          The goal for this project is to develop a few questions to answer using SQL queries.
+
+                          <br /><br />
+                          The following content is also available in <a href="assets/write-ups/pdf/dvd_sql-project.pdf">PDF</a>
+
+                      </span>
+                  </div>
+                  <span>
+                      Database details (and the database itself) can be found: https://www.postgresqltutorial.com/postgresql-getting-started/postgresql-sample-database/
+                      <br /><br />
+                      The website itself does not mention if the data is cleaned and prepared for analysis. I decided
+                      that it would  be best to double check the data and look for potential errors.  I don't think there
+                      will be any, but it doesn't hurt to check.
+                      <br /><br />
+                      Table Names:  <br />
+                      &emsp;Actor <br />
+                      &emsp;Address<br />
+                      &emsp;Category<br />
+                      &emsp;City<br />
+                      &emsp;Country<br />
+                      &emsp;Customer<br />
+                      &emsp;Film<br />
+                      &emsp;Film_actor<br />
+                      &emsp;Film_category<br />
+                      &emsp;Inventory<br />
+                      &emsp;Language<br />
+                      &emsp;Payment<br />
+                      &emsp;Rental<br />
+                      &emsp;Staff<br />
+                      &emsp;Store<br />
+                  </span>
+              </div>
+          </section>
+
+          <section class="section my-services" data-section="section2">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>Process &amp; Visualizations</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          This project was completed using Postgres.
+                      </span>
+                  </div>
+                  <div>
+                      <span>
+                          Due to the number of tables and columns in this database, I will just describe the error-checking
+                          results. <br /><br />
+
+                          Using very basic queries, I displayed first 10 rows of data for each table to check the
+                          data type for each column and to check for missing data.<br />
+                      </span>
+                      <span>
+                          <pre class="coder">
+                          <code>
+#######
+The Queries used: (table_name replaced with actual name of table)
+Type: SELECT * FROM table_name LIMIT 5;
+NULL: SELECT * FROM table_name WHERE NOT (actor IS NOT NULL) LIMIT 5;
+#######
+
+
+
+*******
+The Table Results
+*******
+actor: no problems
+address: has nulls in 'address2', 'postal_code', and 'phone'
+'postal_code' has type character
+'phone' has type character
+Phone type can be ignored
+Postal type can be ignored
+category: no problems
+city: no problems
+country: no problems
+customer: no problems
+film: no problems
+film_actor: no problems
+film_category: no problems
+inventory: no problems
+language: no problems
+payment: no problems
+rental: has nulls in 'return_date'
+staff: has null in 'picture'
+'picture' can be ignored
+store: no problems
+                              </code>
+                          </pre>
+                      </span>
+                      <span>
+                          A few issues were found: <br />
+                          &emsp;The 'address' table contained nulls in three (3) columns. Two (2) of these columns of type
+                          'character' when they could be numerical or integer.<br />
+                          &emsp;The 'rental' table contained nulls in one (1) column
+                          I may want to add a new column of type bool to determine whether rental was returned or not.<br />
+                          &emsp;The 'staff' table contained a null in one (1) column, but it is a non-issue and can be ignored because
+                          the column is not useful.<br /><br /><br />
+
+
+                          Using the following query, I wanted to look at if the postal_code would be useful at all.  After running the
+                          query, the results showed that the 'postal_code' column really wouldn't provide any information that I couldn't
+                          get from other address columns.<br /><br />
+                      </span>
+                      <span>
+                          <pre class="coder">
+                          <code>
+select postal_code, 
+        count(postal_code) 
+        from address
+group by postal_code 
+order by count(postal_code) DESC;
+                              </code>
+                          </pre>
+                      </span>
+                      <span>
+                          Looking at the other errors found, I determined that there was no need to fix anything as most of the affected columns
+                          were not going to be used in any analysis that I may perform. The 'return_date' column in the 'rental' table may be used, 
+                          but limited number of nulls in that column should not affect the results significantly.<br /><br />
+
+                          Going through the data as I did gave me the chance to look at the data and start to get ideas on how to analyze it.
+                          I want to create a few questions to use queries to try to answer.<br /><br /><br />
+                      </span>
+                      <span>
+                          #*#*#*#*#*#<br />
+                          The Questions<br />
+                          #*#*#*#*#*#<br /><br />
+
+                          Q-1: What is the most rented film genre by store?<br />
+                          Q-2: Average rental price by genre by store?<br />
+                          Q-3: What are the top ten customers with the most rentals?<br />
+                          Q-4: Total rental payments by store (also include total number of rentals per store)<br />
+                          Q-5: Average rental time period by genre? (in days)<br /><br /><br />
+                      </span>
+                      <span>
+                          #*#*#*#*#*#<br />
+                          The Queries and Answers<br />
+                          #*#*#*#*#*#<br /><br />
+
+                          While 'INNER JOIN' is featured in these final queries, I originally used
+                          'LEFT JOIN'.  Both JOIN methods produced the same results.<br /><br />
+
+                          Q-1: What is the most rented film genre by store?<br />
+
+                          <pre class="coder">
+                          <code>
+SELECT
+    COUNT(rental.rental_id) as num_rented,
+    category.name,
+    store.store_id
+FROM rental
+INNER JOIN staff
+    on rental.staff_id = staff.staff_id
+INNER JOIN inventory
+    on rental.inventory_id = inventory.inventory_id
+INNER JOIN film_category
+    on film_category.film_id = inventory.film_id
+INNER JOIN category
+    on film_category.category_id = category.category_id
+INNER JOIN store
+    on staff.store_id = store.store_id
+GROUP BY category.name, 
+         store.store_id
+ORDER BY num_rented DESC, 
+         store.store_id
+LIMIT 5;
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/sql-project/image-0.png"><img src="assets/images/sql-project/image-0.png" alt="" /></a>
+                          </div><br /><br />
+
+                          Q-2: Average rental price by genre by store?<br />
+
+                          <pre class="coder">
+                          <code>
+SELECT
+    ROUND(AVG(payment.amount), 2) as avg_payment,
+    category.name as Genre,
+    store.store_id as Store
+FROM rental
+INNER JOIN inventory
+    on rental.inventory_id = inventory.inventory_id
+INNER JOIN film_category
+    on film_category.film_id = inventory.film_id
+INNER JOIN category
+    on film_category.category_id = category.category_id
+INNER JOIN payment
+    on rental.customer_id = payment.customer_id
+INNER JOIN staff
+    on rental.staff_id = staff.staff_id
+INNER JOIN store
+    on staff.store_id = store.store_id
+GROUP BY category.name, 
+         store.store_id
+ORDER BY store.store_id ASC, 
+         avg_payment DESC;
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/sql-project/image-1.png"><img src="assets/images/sql-project/image-1.png" alt="" /></a>
+                          </div><br /><br />
+
+                          Q-3: What are the top ten customers with the most rentals?<br />
+
+                          <pre class="coder">
+                          <code>
+SELECT
+    COUNT(rental.rental_id) as amt_rented,
+    customer.first_name,
+    customer.last_name,
+    customer.email
+FROM rental
+INNER JOIN customer
+    on rental.customer_id = customer.customer_id
+GROUP BY customer.first_name, 
+         customer.last_name, 
+         customer.email
+ORDER BY amt_rented DESC
+LIMIT 10;
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/sql-project/image-2.png"><img src="assets/images/sql-project/image-2.png" alt="" /></a>
+                          </div><br /><br />
+
+                          Q-4: Total rental payments by store (also include total number of rentals per store)<br />
+
+                          <pre class="coder">
+                          <code>
+SELECT
+    ROUND(SUM(payment.amount), 2) as total_payment,
+    COUNT(rental.rental_id) as num_rental,
+    category.name as Genre,
+    store.store_id as Store
+FROM rental
+INNER JOIN inventory
+    on rental.inventory_id = inventory.inventory_id
+INNER JOIN film_category
+    on film_category.film_id = inventory.film_id
+INNER JOIN category
+    on film_category.category_id = category.category_id
+INNER JOIN payment
+    on rental.customer_id = payment.customer_id
+INNER JOIN staff
+    on rental.staff_id = staff.staff_id
+INNER JOIN store
+    on staff.store_id = store.store_id
+GROUP BY category.name, 
+         store.store_id
+ORDER BY store.store_id ASC, 
+         total_payment DESC;
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/sql-project/image-3.png"><img src="assets/images/sql-project/image-3.png" alt="" /></a>
+                          </div><br /><br />
+
+                          Q-5: Average rental time period by genre? (in days)<br />
+
+                          <pre class="coder">
+                          <code>
+SELECT
+    category.name as genre,
+    ROUND( CAST(float8 (AVG(EXTRACT(DAY FROM rental.return_date - rental.rental_date))) as numeric), 1) as avg_rent_time
+FROM rental
+INNER JOIN inventory
+    on rental.inventory_id = inventory.inventory_id
+INNER JOIN film_category
+    on film_category.film_id = inventory.film_id
+INNER JOIN category
+    on film_category.category_id = category.category_id
+GROUP BY genre
+ORDER BY avg_rent_time DESC;
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/sql-project/image-4.png"><img src="assets/images/sql-project/image-4.png" alt="" /></a>
+                          </div><br /><br />
+
+                          -*-*-*-*-*-END OF PROJECT-*-*-*-*-*-
+                      </span>
+                  </div>
+              </div>
+          </section>
+
+          <!--
+           <section class="section my-work" data-section="section3">
+               <div class="container">
+                   <div class="section-heading">
+                       <h2>Discussion</h2>
+                       <div class="line-dec"></div>
+                       <span>
+                           This section contains comments or thoughts about this project.
+                       </span>
+                   </div>
+                   <span>
+                       This is where my comments will go.
+
+
+                   </span>
+               </div>
+           </section>
+            -->
+
+          <section class="section contact-me" data-section="section4">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>That's It!</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          That's the end of this project. Please click the button below to return to the main page.'
+                      </span>
+                  </div>
+                  <div class="red-button">
+                      <a href="index.html#projects">Back to Projects</a>
+                  </div>
+              </div>
+          </section>
+
+      </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script>
+      //according to loftblog tut
+      $(".main-menu li:first").addClass("active");
+
+      var showSection = function showSection(section, isAnimate) {
+        var direction = section.replace(/#/, ""),
+          reqSection = $(".section").filter(
+            '[data-section="' + direction + '"]'
+          ),
+          reqSectionPos = reqSection.offset().top - 0;
+
+        if (isAnimate) {
+          $("body, html").animate(
+            {
+              scrollTop: reqSectionPos
+            },
+            800
+          );
+        } else {
+          $("body, html").scrollTop(reqSectionPos);
+        }
+      };
+
+      var checkSection = function checkSection() {
+        $(".section").each(function() {
+          var $this = $(this),
+            topEdge = $this.offset().top - 80,
+            bottomEdge = topEdge + $this.height(),
+            wScroll = $(window).scrollTop();
+          if (topEdge < wScroll && bottomEdge > wScroll) {
+            var currentId = $this.data("section"),
+              reqLink = $("a").filter("[href*=\\#" + currentId + "]");
+            reqLink
+              .closest("li")
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
+          }
+        });
+      };
+
+      $(".main-menu").on("click", "a", function(e) {
+        e.preventDefault();
+        showSection($(this).attr("href"), true);
+      });
+
+      $(window).scroll(function() {
+        checkSection();
+      });
+    </script>
+  </body>
+</html>
