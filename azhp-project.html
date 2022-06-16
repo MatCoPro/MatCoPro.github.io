@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900"
+      rel="stylesheet"
+    />
+
+    <title>Matt Cooper - Analyst Portfolio</title>
+<!--
+Reflux Template
+https://templatemo.com/tm-531-reflux
+-->
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="assets/css/fontawesome.css" />
+    <link rel="stylesheet" href="assets/css/templatemo-style.css" />
+  </head>
+
+  <body>
+      <div id="page-wraper">
+          <!-- Floating Return Button-->
+          <div class="red-button-float">
+              <a href="index.html#projects">Back to Projects</a>
+          </div>
+          <!-- Sidebar Menu -->
+          <div class="responsive-nav">
+              <i class="fa fa-bars" id="menu-toggle"></i>
+              <div id="menu" class="menu">
+                  <i class="fa fa-times" id="menu-close"></i>
+                  <div class="container">
+                      <div class="image">
+                          <a href="#"><img src="assets/images/author-image.jpg" alt="" /></a>
+                      </div>
+                      <div class="author-content">
+                          <h4>Matt Cooper</h4>
+                          <span>Data Analyst</span>
+                      </div>
+                      <nav class="main-nav" role="navigation">
+                          <ul class="main-menu">
+                              <li><a href="#section1">Intro</a></li>
+                              <li><a href="#section2">Code &amp; Visualizations</a></li>
+                              <!--<li><a href="#section3">Final Thoughts</a></li>-->
+                              <li><a href="#section4">Go Back</a></li>
+                          </ul>
+                      </nav>
+                      <div class="social-network">
+                          <ul class="soial-icons">
+                              <li>
+                                  <a href="https://www.linkedin.com/in/mattcoopro/"><i class="fa fa-linkedin"></i></a>
+                              </li>
+                          </ul>
+                      </div>
+                      <div class="copyright-text">
+                          <p>
+                              Copyright 2019 <a href="https://templatemo.com/tm-531-reflux">Design Template "Reflux"</a><br />
+                              Copyright 2022 Matt Cooper
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <section class="section about-me" data-section="section1">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>Introduction</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          This project uses Python for the whole data process. <br />
+                          This dataset describes the sale prices of homes in Arizona during the 2021 year.
+
+                          <br /><br />
+                          The following content is also available in <a href="assets/write-ups/pdf/azhp-project.pdf">PDF</a>
+
+                      </span>
+                  </div>
+                  <span>
+                      Dataset source: https://www.kaggle.com/antoniong203/arizona-houses-2021
+                      <br />
+                      Column Names:  <br />
+                      &emsp;&emsp;Price <br />
+                      &emsp;&emsp;Address <br />
+                      &emsp;&emsp;Local_area <br />
+                      &emsp;&emsp;Zipcode <br />
+                      &emsp;&emsp;Beds <br />
+                      &emsp;&emsp;Baths <br />
+                      &emsp;&emsp;Sqft <br />
+                      &emsp;&emsp;URL (direct link to home info)
+                      <br />
+                      <br />
+                      Number of data rows: 563
+                      <br />
+                      <br />
+                      Upon looking at the data, I decided that I wanted to develop three (3) questions to use this data to answer.
+                      <br />
+                      &emsp;&emsp;Q1: What are the top 5 areas with the most home sales?<br />
+                      &emsp;&emsp;Q2: What 'Local Area' has the highest average price?<br />
+                      &emsp;&emsp;Q3: What is the average square footage of the most popular local?<br /><br /><br />
+                  </span>
+                  <span>
+                      I spent some time browsing the data and performing some exploratory analysis.
+                      I found a few aspects of the data that I wanted to handle before diving further into
+                      the analysis.
+                      <br />
+                      &emsp;&emsp;'local_area’ was renamed ‘city’<br />
+                      &emsp;&emsp;‘Price’ had skewed distribution, so outliers were removed<br />
+                      &emsp;&emsp;38 data points were removed<br />
+                      &emsp;&emsp;One data point had non-numerical zip code and was removed<br />
+                      &emsp;&emsp;‘url’ and ‘address’ columns were removed<br />
+
+                  </span>
+              </div>
+          </section>
+
+          <section class="section my-services" data-section="section2">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>My Code &amp; Visualizations</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          The code below was written in Python.
+                      </span>
+                  </div>
+                  <div>
+                      <span>
+                          <pre class="coder">
+                          <code>
+# -*- coding: utf-8 -*-
+# Written by Matt Cooper
+
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import scipy as sp
+import collections as cl
+import seaborn as sns
+
+np.random.seed(1029384756)
+
+#Loading the dataset
+az_data = pd.read_csv('C:/Datasets/Arizona_Home_Data/AZhousingData.csv')
+
+#Printing a short version of the data for easy viewing
+print(az_data.head(10))
+#The URL and address columns make this printout useless
+
+#Questions to answer with this dataset
+# 1. What are the top 5 areas with the most home sales?
+# 2. What 'Local Area' has the highest average price?
+# 3. What is the average square footage of the most popular local?
+
+
+
+#--------Initial Cleanup of dataset--------
+#Removes the url and address columns as they are not needed
+az_data = az_data.drop(columns=['url', 'address'])
+
+#Printing a short version of the data for easy viewing
+print(az_data.head(10))
+
+#Prints the details of the data
+print(az_data.isna().sum())
+
+#Prints the details of the data
+print(az_data.info())
+
+#Prints the details of the data
+print(az_data.describe())
+
+                              </code>
+                      </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-0.png"><img src="assets/images/azhp/img-0.png" alt="" /></a>
+                          </div><br />
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-1.png"><img src="assets/images/azhp/img-1.png" alt="" /></a>
+                          </div><br />
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-2.png"><img src="assets/images/azhp/img-2.png" alt="" /></a>
+                          </div><br />
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-3.png"><img src="assets/images/azhp/img-3.png" alt="" /></a>
+                          </div> <br /><br />
+
+                          <span>
+                              To start off, I wanted to take a quick look at the data to see what I'm working with and to
+                              see where any initial errors may be.  A few items need to be addressed.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#Rename column 'local_area' to 'city'
+az_data = az_data.rename(columns={'Local_area' : 'city'})
+
+#Rename column 'Price' to 'price'
+az_data = az_data.rename(columns={'Price' : 'price'})
+
+#Re-type 'beds' and 'sqft'
+az_data = az_data.astype({'beds': 'int64'})
+az_data = az_data.astype({'sqft': 'int64'})
+
+#Printing a short version of the data for easy viewing
+print(az_data.head(10))
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-4.png"><img src="assets/images/azhp/img-4.png" alt="" /></a>
+                          </div><br />
+
+                          <pre class="coder">
+                          <code>
+#----------Finding why the zipcode column was type object and not integer
+#----------and fixing the problem
+#Sort the 'zipcode' data to find error
+az_data = az_data.sort_values(by=['zipcode'], ascending= False)
+
+#Printing a short version of the data for easy viewing
+print(az_data.head(10))
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-5.png"><img src="assets/images/azhp/img-5.png" alt="" /></a>
+                          </div><br />
+
+                          <pre class="coder">
+                          <code>
+#Removes the string error in the zipcode column
+az_data = az_data.iloc[1:]
+
+#Re-type 'zipcode'
+az_data = az_data.astype({'zipcode': 'int64'})
+
+#Printing a short version of the data for easy viewing
+print(az_data.head(10))
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-6.png"><img src="assets/images/azhp/img-6.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              The initial fixes are complete.  Now, to start looking closer at the actual data for errors.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#----------Checking price for extreme outliers
+
+#histogram of Price
+x = az_data["price"]
+plt.title("Price - Histogram")
+plt.xlabel("Price")
+plt.hist(x, bins='auto')
+plt.show()
+
+# Creating boxplot
+plt.title("Price - Boxplot")
+plt.boxplot(az_data.price)
+plt.show()
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-7.png"><img src="assets/images/azhp/img-7.png" alt="" /></a>
+                          </div>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-8.png"><img src="assets/images/azhp/img-8.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              In the 'Price' visualizations, we see several data points as outliers.  I wanted to get
+                              a numerical determination to assist in the removal of the true outliers.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#----------Identifying and counting the outliers in 'price'
+
+# calculating the 1st quartile
+q1 = np.quantile(az_data.price, 0.25)
+
+# calculating the 3rd quartile
+q3 = np.quantile(az_data.price, 0.75)
+med = np.median(az_data.price)
+
+# calculating the iqr region
+iqr = q3-q1
+
+# calculating upper and lower whiskers
+upper_bound = q3+(1.5*iqr)
+lower_bound = q1-(1.5*iqr)
+print("IGR: " + str(iqr),"     " , "Upper Bound: " + str(upper_bound),"     " , "Lower Bound: " + str(lower_bound))
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-9.png"><img src="assets/images/azhp/img-9.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              The above code provides me with the upper and lower bounds (cutoffs).  The lower bound in
+                              this case doesn't mean anything and can be ignored. We are more interested in the upper bound.
+                              Any data point above that value is considered an outlier and can be removed. <br />
+                              Before I remove the data, I'd like to know how many data points will be removed.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#Identifying the outliers and prviding a count
+outliers = az_data.price[(az_data.price <= lower_bound) | (az_data.price >= upper_bound)]
+print('The following are the outliers in the boxplot:{}'.format(outliers))
+outliers.count() #the count is 38
+
+#calculating the amount of data lost if outliers are removed
+# 562-38 = 532
+# 532/562*100 = 94.7% of data would remain
+# 100-94.7 = 5.3% of data lost
+
+
+
+#----------Remove identified outliers from 'price'
+
+#Sort the 'Price' data to aid in outlier removal
+az_data = az_data.sort_values(by=['price'], ascending= False)
+
+#removes to values <= $1 million in the price column
+az_data = az_data.iloc[38:]
+
+#Repeat histogram and boxplots
+#histogram of Price
+x = az_data["price"]
+plt.title("Housing Price - Histogram")
+plt.xlabel("Price")
+plt.hist(x, bins='auto', color = "skyblue", ec="black")
+current_valuesx = plt.gca().get_xticks()
+plt.gca().set_xticklabels(['{:.0f}'.format(x) for x in current_valuesx])
+plt.show()
+
+# Creating boxplot
+plt.title("Price - Boxplot")
+plt.ylabel("Price")
+plt.boxplot(az_data.price, patch_artist=True,
+boxprops=dict(facecolor='green', color='black'),
+capprops=dict(color='red'),
+whiskerprops=dict(color='black'),
+flierprops=dict(color='blue', markeredgecolor='black'),
+medianprops=dict(color='yellow'))
+current_values = plt.gca().get_yticks()
+plt.gca().set_yticklabels(['{:.0f}'.format(x) for x in current_values])
+plt.show()
+
+#####-----NOTE: the boxplot still shows some outliers due to the new range
+#####-----      of the data no further removal is needed for 'price'
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-10.png"><img src="assets/images/azhp/img-10.png" alt="" /></a>
+                          </div>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-11.png"><img src="assets/images/azhp/img-11.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              The extreme outliers in the 'Price' column have been removed.  While the boxplot continues to
+                              show outliers, it is only because the range of the data has changed and therefore the upper bound
+                              also gets changed resulting in new data points being labeled as outliers.  We do not need to remove
+                              them.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#----------Checking 'bedroom' 'bath' and 'sqrt' for outliers
+
+# Bedroom and Bathrooms
+#histogram
+x = az_data["beds"]
+y = az_data["baths"]
+plt.title("Beds & Baths")
+plt.hist(x, bins='auto',  alpha=0.5, label='Bedrooms')
+plt.hist(y, bins='auto',  alpha=0.5, label='Bathrooms')
+plt.legend(loc='upper right')
+plt.show()
+
+# Boxplot
+azbb = az_data[["beds","baths"]]
+plt.title("Beds & Baths - Boxplot")
+box = plt.boxplot(azbb, patch_artist=True, meanline=True, medianprops=dict(color='red'))
+plt.xticks([1, 2], ["Bedrooms", "Bathrooms"], rotation=10)
+
+colors = ['rosybrown', 'mistyrose']
+
+for patch, color in zip(box['boxes'], colors):
+patch.set_facecolor(color)
+plt.show()
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-12.png"><img src="assets/images/azhp/img-12.png" alt="" /></a>
+                          </div>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-13.png"><img src="assets/images/azhp/img-13.png" alt="" /></a>
+                          </div>
+
+                          <pre class="coder">
+                          <code>
+# Square Feet
+#histogram
+x = az_data["sqft"]
+plt.title("Square Footage - Histogram")
+plt.xlabel("Square Footage")
+plt.hist(x, bins='auto', color = "skyblue", ec="black")
+plt.show()
+
+# Creating boxplot
+plt.title("Square Footage - Boxplot")
+plt.boxplot(az_data.sqft, patch_artist=True,
+boxprops=dict(facecolor='salmon', color='black'),
+medianprops=dict(color='black'))
+plt.xticks([1], ["Square Footage"], rotation=0)
+plt.show()
+
+#There are outliers, but I can't think of a reason to remove them
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-14.png"><img src="assets/images/azhp/img-14.png" alt="" /></a>
+                          </div>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-15.png"><img src="assets/images/azhp/img-15.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              We look at the other numerical columns for outliers and while there are some, their presence should
+                              not interfere significantly. Next, I'd like to see how the variables correlate (if at all).
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#Running a correlation on the numerical
+az_data2 = az_data[["price","beds", "baths", "sqft"]]
+corrAz = az_data2.corr()
+corrAz
+sns.heatmap(corrAz, annot = True, cmap="Greens")
+plt.title("Correlation Chart", fontsize =20)
+plt.show()
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-16.png"><img src="assets/images/azhp/img-16.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <span>
+                              It is interesting to see that square footage and bathrooms have the highest correlation. I expected that
+                              the square footage and price would be the highest. <br /><br />
+                              In order to answer question #1, I needed to prepare the data to find the result.
+                          </span><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#Looking at averages
+cols = ['price','beds','baths','sqft']
+cols2 = ['city', 'price','beds','baths','sqft']
+azdata = az_data[cols].mean()
+cpmean = az_data[cols2].groupby('city').mean()
+
+cpmean = cpmean.sort_values(by=['price'], ascending= False)
+
+
+#Setting up to answer Q1
+print('Appearances of each city within dataset')
+print(az_data['city'].value_counts())
+
+#More setting up to answer Q1
+cityCounts = az_data['city'].value_counts()
+cityCounts = cityCounts.to_frame()
+cityCounts2 = cityCounts['city'].value_counts()
+cityCounts2 = cityCounts2.sort_index()
+
+cityCounts = cityCounts.reset_index()
+cityCounts = cityCounts.rename(columns={'city' : 'count'})
+cityCounts = cityCounts.rename(columns={'index' : 'city'})
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-17.png"><img src="assets/images/azhp/img-17.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#-------Answers to questions-------
+#----------------------------------
+
+#Answering Q1
+print("1. What are the top 5 areas with the most home sales?")
+print(cityCounts.head(5))
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-18.png"><img src="assets/images/azhp/img-18.png" alt="" /></a>
+                          </div><br /><br />
+
+
+                          <pre class="coder">
+                          <code>
+#Answering Q2
+az_data3=az_data.drop(columns =['beds', 'baths' ,'sqft', 'zipcode' ])
+b=az_data3.groupby(['city']).mean()
+b=b.sort_values(by =['price'], ascending=False)
+b=b.head(1)
+b=b.astype({"price": 'int64' })
+print()
+print()
+print("2. What 'Local Area' has the highest average price?")
+print(b)
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-19.png"><img src="assets/images/azhp/img-19.png" alt="" /></a>
+                          </div><br /><br />
+
+                          <pre class="coder">
+                          <code>
+#Answering Q3
+az_data4=az_data.drop(columns =['beds', 'baths' ,'price', 'zipcode' ])
+c=az_data4.groupby(['city']).mean()
+c=c.reset_index()
+c=c.rename(columns ={'index' : 'city' })
+c=c[c.city = ='Phoenix' ]
+c=c.astype({"sqft": 'int64' })
+#print(c[c.sqft= ='Phoenix' ])
+#c=c.sort_values(by =['sqft'], ascending=False)
+#c=c.head(1)
+#b=b.astype({"price": 'int64' })
+print()
+print()
+print("3. What is the average square footage of the most popular local?")
+print(c)
+
+#-----------------THE END-----------------#
+                              </code>
+                          </pre>
+                          <div class="image2">
+                              <a href="assets/images/azhp/img-20.png"><img src="assets/images/azhp/img-20.png" alt="" /></a>
+                          </div>
+
+                      </span>
+                  </div>
+              </div>
+          </section>
+
+
+          <!--
+          <section class="section my-work" data-section="section3">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>Discussion</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          This section contains comments or thoughts about this project.
+                      </span>
+                  </div>
+                  <span>
+                      This is where my comments will go.
+
+
+                  </span>
+              </div>
+          </section>
+          -->
+
+
+          <section class="section contact-me" data-section="section4">
+              <div class="container">
+                  <div class="section-heading">
+                      <h2>That's It!</h2>
+                      <div class="line-dec"></div>
+                      <span>
+                          That's the end of this project. Please click the button below to return to the main page.'
+                      </span>
+                  </div>
+                  <div class="red-button">
+                      <a href="index.html#projects">Back to Projects</a>
+                  </div>
+              </div>
+          </section>
+
+      </div>
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/isotope.min.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script>
+      //according to loftblog tut
+      $(".main-menu li:first").addClass("active");
+
+      var showSection = function showSection(section, isAnimate) {
+        var direction = section.replace(/#/, ""),
+          reqSection = $(".section").filter(
+            '[data-section="' + direction + '"]'
+          ),
+          reqSectionPos = reqSection.offset().top - 0;
+
+        if (isAnimate) {
+          $("body, html").animate(
+            {
+              scrollTop: reqSectionPos
+            },
+            800
+          );
+        } else {
+          $("body, html").scrollTop(reqSectionPos);
+        }
+      };
+
+      var checkSection = function checkSection() {
+        $(".section").each(function() {
+          var $this = $(this),
+            topEdge = $this.offset().top - 80,
+            bottomEdge = topEdge + $this.height(),
+            wScroll = $(window).scrollTop();
+          if (topEdge < wScroll && bottomEdge > wScroll) {
+            var currentId = $this.data("section"),
+              reqLink = $("a").filter("[href*=\\#" + currentId + "]");
+            reqLink
+              .closest("li")
+              .addClass("active")
+              .siblings()
+              .removeClass("active");
+          }
+        });
+      };
+
+      $(".main-menu").on("click", "a", function(e) {
+        e.preventDefault();
+        showSection($(this).attr("href"), true);
+      });
+
+      $(window).scroll(function() {
+        checkSection();
+      });
+    </script>
+  </body>
+</html>
